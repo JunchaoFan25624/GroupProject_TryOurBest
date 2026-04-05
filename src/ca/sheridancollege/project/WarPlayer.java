@@ -19,9 +19,8 @@ public class WarPlayer extends Player {
     // THIS REPRESENTS THE PLAYER'S PERSONAL HAND/DECK.
     private WarGroups deck;
     
-    public WarPlayer(String name, WarGroups deck) {
+    public WarPlayer(String name) {
         super(name);
-        this.deck = deck;
     }
 
     /**
