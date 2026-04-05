@@ -68,7 +68,8 @@ public class WarGame extends Game {
     
     @Override
     public void play() {
-        // TODO: CALL startGame() HERE TO KICK OFF THE GAME
+        // CALL startGame() HERE TO KICK OFF THE GAME
+        startGame();
     }
     
     /**
@@ -79,8 +80,17 @@ public class WarGame extends Game {
      * IF TIE: SIMPLY SET THE 'tie' BOOLEAN FLAG TO TRUE. DO NOTHING ELSE.
      */
     public void Comparing(WarCard p1, WarCard p2) {
-        // TODO: COMPARE P1 AND P2 NUMBERS. 
-        // TODO: SET tie = TRUE IF THEY ARE EQUAL.
+        // COMPARE P1 AND P2 NUMBERS. 
+        // SET tie = TRUE IF THEY ARE EQUAL.
+        if(p1.getNumber().getValue() > p2.getNumber().getValue()) {
+            
+        }
+        else if(p1.getNumber().getValue() < p2.getNumber().getValue()) {
+            
+        }
+        else {
+            tie = true;
+        }
     }
 
     /**
@@ -98,12 +108,11 @@ public class WarGame extends Game {
     }
 
     /**
-     * TODO: DEV NOTES - FETCHES HOW MANY CARDS A PLAYER CURRENTLY HAS.
+     * DEV NOTES - FETCHES HOW MANY CARDS A PLAYER CURRENTLY HAS.
      * DELEGATES TO THE PLAYER'S WarGroups INSTANCE.
      */
     public int groupSize(WarPlayer player) {
-        // TODO: RETURN player.getDeck().getSize() OR SIMILAR
-        return 0;
+        return player.getDeck().getSize();
     }
 
     /**
@@ -112,7 +121,8 @@ public class WarGame extends Game {
      * RESETS THE 'tie' BOOLEAN FLAG TO FALSE.
      */
     public void resetTable() {
-        // TODO: clear() cardsOnTable AND SET tie = false
+        cardsOnTable.clear();
+        tie = false;
     }
 
     @Override
@@ -120,5 +130,12 @@ public class WarGame extends Game {
         // TODO: DEV NOTES - EVALUATE WHO WON.
         // CHECK IF A PLAYER HAS 52 CARDS, OR IF ROUND LIMIT HIT, CHECK WHO HAS HIGHER groupSize().
         // PRINT OUT THE WINNER CLEARLY TO THE CONSOLE.
+        if(groupSize((WarPlayer) getPlayers().get(0)) == 52) {
+           System.out.println("Player 1 Wins");
+        }
+        else if(groupSize((WarPlayer) getPlayers().get(1)) == 52) {
+           System.out.println("Player 2 Wins");
+        }
+        
     }
 }
