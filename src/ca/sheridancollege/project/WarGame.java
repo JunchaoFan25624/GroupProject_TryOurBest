@@ -19,7 +19,8 @@ public class WarGame extends Game {
     private int currentRound;
     private ArrayList<WarCard> cardsOnTable;
     private boolean tie;
-    private final int MAX_THRESHOLD = 10;
+    private boolean gameOver;
+    private final int MAX_THRESHOLD = 10000;
 
     public WarGame(String name) {
         super(name);
@@ -29,6 +30,7 @@ public class WarGame extends Game {
         currentRound = 0;
         cardsOnTable = new ArrayList<WarCard>();
         tie = false;
+        gameOver = false;
     }
 
     // CREATE GETTERS AND SETTERS FOR currentRound
@@ -94,15 +96,19 @@ public class WarGame extends Game {
         // Start while loop
         while((currentRound < MAX_THRESHOLD) 
                 && player1.getDeck().getSize() > 0 
-                && player2.getDeck().getSize() > 0) {
-        
+                && player2.getDeck().getSize() > 0
+                && !gameOver) {
+            
             WarCard p1Card = ((WarPlayer) getPlayers().get(0)).getDeck().grabCard(0);
             WarCard p2Card = ((WarPlayer) getPlayers().get(1)).getDeck().grabCard(0);
             cardsOnTable.add(p1Card);
             cardsOnTable.add(p2Card);
             
             System.out.println("\nRound " + (currentRound + 1));
-
+            System.out.println(player1.getName() + " deck size: " + (player1.getDeck().getSize()+1));
+            System.out.println(player2.getName() + " deck size: " + (player2.getDeck().getSize()+1));
+            
+            
             comparing(p1Card, p2Card);
             
             if (tie) {
@@ -121,10 +127,12 @@ public class WarGame extends Game {
                 }
             }
             
+            System.out.println("Cards on table: " + cardsOnTable.size());
+            
             System.out.println(player1.getName() + " deck size: " + player1.getDeck().getSize());
             System.out.println(player2.getName() + " deck size: " + player2.getDeck().getSize());
             // HERE: give everything to winner. Depends if comparing is void 
-            
+
             resetTable();
             currentRound++;
         }
@@ -146,29 +154,6 @@ public class WarGame extends Game {
      * IF P2 WINS: MARK P2 AS WINNER FOR THIS ROUND.
      * IF TIE: SIMPLY SET THE 'tie' BOOLEAN FLAG TO TRUE. DO NOTHING ELSE.
      */
-//    public void comparing(WarCard p1, WarCard p2) {
-//        // COMPARE P1 AND P2 NUMBERS. 
-//        // SET tie = TRUE IF THEY ARE EQUAL.
-//        System.out.println(player1.getName() + " : " + p1);
-//        System.out.println(player2.getName() +  " : " + p2);
-//        if(p1.getNumber().getValue() > p2.getNumber().getValue()) {
-//            for(WarCard card : cardsOnTable){
-//                player1.addCard(card);
-//            }
-//            System.out.println(player1.getName() + " wins this round");
-//        }
-//        else if(p1.getNumber().getValue() < p2.getNumber().getValue()) {
-//            for(WarCard card : cardsOnTable){
-//                player2.addCard(card);
-//            }
-//            System.out.println(player2.getName()+ " wins this round");
-//        }
-//        else {
-//            tie = true;
-//            System.out.println("War occures");
-//            resolveWar(p1, p2);
-//        }
-//    }
     
     public void comparing(WarCard p1, WarCard p2) {
         System.out.println(player1.getName() + " : " + p1);
@@ -177,6 +162,7 @@ public class WarGame extends Game {
         if (p1.getNumber().getValue() == p2.getNumber().getValue()) {
             tie = true;
             System.out.println("War occurs");
+            System.out.println("Each player grab 3 crads and put them on the table");
         } else {
             tie = false;
         }
@@ -192,33 +178,28 @@ public class WarGame extends Game {
      *    YOU CAN ALSO JUST RELY ON THE GLOBAL STATE AS PER YOUR MAINTAINABILITY NOTE).
      */
     public void resolveWar(WarCard p1, WarCard p2) {
-        // TODO: IMPLEMENT WAR LOGIC (3 CARDS DOWN, 1 UP)
-        if (player1.getDeck().getSize() < 4 || player2.getDeck().getSize() < 4) {
-            System.out.println("One player has no enough card, game is over!");
-            tie = false;
-            return;
-        }
-        // 3 face-down cards each    
-        for (int i = 0; i < 3; i++){
+        while (tie) {
+            if (player1.getDeck().getSize() < 4 || player2.getDeck().getSize() < 4) {
+                System.out.println("One player does not have enough cards for war.");
+                tie = false;
+                gameOver = true;
+                return;
+            }
+
+        // 3 face-down cards each
+        for (int i = 0; i < 3; i++) {
             cardsOnTable.add(player1.getDeck().grabCard(0));
             cardsOnTable.add(player2.getDeck().grabCard(0));
-//            if(player1.getDeck().getSize() > 0){
-//                cardsOnTable.add(player1.getDeck().grabCard(0));
-////                System.out.println(player1.getName() + " facedown");
-//            }
-//            if(player2.getDeck().getSize() > 0){
-//                cardsOnTable.add(player2.getDeck().grabCard(0));
-////                System.out.println(player2.getName() + " facedown");
-//            }
         }
-        // 1 face-up card each    
+
+        // 1 face-up card each
         WarCard p1NewCard = player1.getDeck().grabCard(0);
         WarCard p2NewCard = player2.getDeck().grabCard(0);
-         
+
         cardsOnTable.add(p1NewCard);
         cardsOnTable.add(p2NewCard);
         comparing(p1NewCard, p2NewCard);
-        
+
         if (!tie) {
             if (p1NewCard.getNumber().getValue() > p2NewCard.getNumber().getValue()) {
                 for (WarCard card : cardsOnTable) {
@@ -235,8 +216,8 @@ public class WarGame extends Game {
         } else {
             System.out.println("WAR again!");
         }
-        
     }
+}
 
     /**
      * DEV NOTES - FETCHES HOW MANY CARDS A PLAYER CURRENTLY HAS.
@@ -261,12 +242,6 @@ public class WarGame extends Game {
         // TODO: DEV NOTES - EVALUATE WHO WON.
         // CHECK IF A PLAYER HAS 52 CARDS, OR IF ROUND LIMIT HIT, CHECK WHO HAS HIGHER groupSize().
         // PRINT OUT THE WINNER CLEARLY TO THE CONSOLE.
-//        if(groupSize((WarPlayer) getPlayers().get(0)) > groupSize((WarPlayer) getPlayers().get(1))) {
-//           System.out.println(getPlayers().get(0).getName() + " Wins");
-//        }
-//        else {
-//           System.out.println(getPlayers().get(1).getName() + " Wins");
-//        }
         int p1Size = groupSize(player1);
         int p2Size = groupSize(player2);
 
