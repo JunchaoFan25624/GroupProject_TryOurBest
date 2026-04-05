@@ -6,7 +6,7 @@ package ca.sheridancollege.project;
 
 /**
  *
- * @author fjc27
+ * @author Junchao Fan fanjun@sheridancollege.ca
  */
 public class Main {
      public static void main(String[] args) {
