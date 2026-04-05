@@ -17,6 +17,7 @@ public class WarGame extends Game {
     private int currentRound;
     private ArrayList<WarCard> cardsOnTable;
     private boolean tie;
+    private final int MAX_THRESHOLD = 0;
 
     public WarGame(String name) {
         super(name);
@@ -87,6 +88,26 @@ public class WarGame extends Game {
             ((WarPlayer) getPlayers().get(index % 2)).getDeck().addCard((WarCard) c);
             index++;
         }
+        // Start while loop
+        while((currentRound < MAX_THRESHOLD) && (((WarPlayer) getPlayers().get(0)).getDeck().getSize() > 0) && ((WarPlayer) getPlayers().get(1)).getDeck().getSize() > 0) {
+            WarCard p1Card = ((WarPlayer) getPlayers().get(0)).getDeck().grabCard(0);
+            WarCard p2Card = ((WarPlayer) getPlayers().get(1)).getDeck().grabCard(1);
+            cardsOnTable.add(p1Card);
+            cardsOnTable.add(p2Card);
+            
+            comparing(p1Card, p2Card);
+            if (tie == true) {
+                resolveWar(p1Card, p2Card);
+            }
+            
+            // HERE: give everything to winner. Depends if comparing is void 
+            
+            resetTable();
+            currentRound++;
+        }
+        
+        // Call declareWinner
+        declareWinner();
     }
     
     @Override
@@ -102,7 +123,7 @@ public class WarGame extends Game {
      * IF P2 WINS: MARK P2 AS WINNER FOR THIS ROUND.
      * IF TIE: SIMPLY SET THE 'tie' BOOLEAN FLAG TO TRUE. DO NOTHING ELSE.
      */
-    public void Comparing(WarCard p1, WarCard p2) {
+    public void comparing(WarCard p1, WarCard p2) {
         // COMPARE P1 AND P2 NUMBERS. 
         // SET tie = TRUE IF THEY ARE EQUAL.
         if(p1.getNumber().getValue() > p2.getNumber().getValue()) {
@@ -154,10 +175,10 @@ public class WarGame extends Game {
         // CHECK IF A PLAYER HAS 52 CARDS, OR IF ROUND LIMIT HIT, CHECK WHO HAS HIGHER groupSize().
         // PRINT OUT THE WINNER CLEARLY TO THE CONSOLE.
         if(groupSize((WarPlayer) getPlayers().get(0)) == 52) {
-           System.out.println("Player 1 Wins");
+           System.out.println(getPlayers().get(0).getName() + " Wins");
         }
         else if(groupSize((WarPlayer) getPlayers().get(1)) == 52) {
-           System.out.println(" Wins");
+           System.out.println(getPlayers().get(1).getName() + " Wins");
         }
         
     }
