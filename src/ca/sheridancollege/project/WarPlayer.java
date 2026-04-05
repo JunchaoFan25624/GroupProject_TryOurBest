@@ -32,7 +32,11 @@ public class WarPlayer extends Player {
         // TODO: IMPLEMENT ADDING CARD LOGIC
         deck.addCard(card);
     }
-
+    
+    public WarGroups getDeck() {
+        return deck;
+    }
+    
     @Override
     public void play() {
         // IMPLEMENT ANY PLAYER SPECIFIC PLAY LOGIC IF NEEDED.
