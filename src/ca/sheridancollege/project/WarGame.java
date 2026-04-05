@@ -98,9 +98,11 @@ public class WarGame extends Game {
             cardsOnTable.add(p1Card);
             cardsOnTable.add(p2Card);
             
+            System.out.println("\nRound " + (currentRound + 1));
+
             comparing(p1Card, p2Card);
-            System.out.println("Player1 deck size: " + player1.getDeck().getSize());
-            System.out.println("Player2 deck size: " + player2.getDeck().getSize());
+            System.out.println(player1.getName() + " deck size: " + player1.getDeck().getSize());
+            System.out.println(player2.getName() + " deck size: " + player2.getDeck().getSize());
             // HERE: give everything to winner. Depends if comparing is void 
             
             resetTable();
@@ -127,22 +129,23 @@ public class WarGame extends Game {
     public void comparing(WarCard p1, WarCard p2) {
         // COMPARE P1 AND P2 NUMBERS. 
         // SET tie = TRUE IF THEY ARE EQUAL.
-        System.out.println("1: " + p1);
-        System.out.println("2: " + p2);
+        System.out.println(player1.getName() + " : " + p1);
+        System.out.println(player2.getName() +  " : " + p2);
         if(p1.getNumber().getValue() > p2.getNumber().getValue()) {
             for(WarCard card : cardsOnTable){
                 player1.addCard(card);
             }
-            System.out.println("Player 1 wins this round");
+            System.out.println(player1.getName() + " wins this round");
         }
         else if(p1.getNumber().getValue() < p2.getNumber().getValue()) {
             for(WarCard card : cardsOnTable){
                 player2.addCard(card);
             }
-            System.out.println("Player 2 wins this round");
+            System.out.println(player2.getName()+ " wins this round");
         }
         else {
             tie = true;
+            System.out.println("War occures");
             resolveWar(p1, p2);
         }
     }
@@ -162,21 +165,23 @@ public class WarGame extends Game {
             System.out.println("One player has no enough card, game is over!");
             tie = false;
         }
-            
+        // 3 face-down cards each    
         for (int i = 0; i < 3; i++){
             if(player1.getDeck().getSize() > 0){
                 cardsOnTable.add(player1.getDeck().grabCard(0));
-                System.out.println("p1 facedown");
+//                System.out.println(player1.getName() + " facedown");
             }
             if(player2.getDeck().getSize() > 0){
                 cardsOnTable.add(player2.getDeck().grabCard(0));
-                System.out.println("p2 facedown");
+//                System.out.println(player2.getName() + " facedown");
             }
         }
-            
+        // 1 face-up card each    
         WarCard p1NewCard = player1.getDeck().grabCard(0);
         WarCard p2NewCard = player2.getDeck().grabCard(0);
-            
+         
+        cardsOnTable.add(p1NewCard);
+        cardsOnTable.add(p2NewCard);
         comparing(p1NewCard, p2NewCard);
         
     }
