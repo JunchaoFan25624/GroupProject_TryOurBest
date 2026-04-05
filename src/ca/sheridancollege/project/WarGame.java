@@ -14,9 +14,12 @@ import java.util.Scanner;
 public class WarGame extends Game {
 
     // DEV NOTES - DECLARE THE FOLLOWING PRIVATE ATTRIBUTES EXACTLY AS UML STATES:
+    private WarPlayer player1;
+    private WarPlayer player2;
     private int currentRound;
     private ArrayList<WarCard> cardsOnTable;
     private boolean tie;
+    private final int MAX_THRESHOLD = 0;
 
     public WarGame(String name) {
         super(name);
@@ -65,8 +68,8 @@ public class WarGame extends Game {
         String p1Name = sc.nextLine();
         System.out.println("Player 2 Name: ");
         String p2Name = sc.nextLine();
-        WarPlayer player1 = new WarPlayer(p1Name);
-        WarPlayer player2 = new WarPlayer(p2Name);
+        player1 = new WarPlayer(p1Name);
+        player2 = new WarPlayer(p2Name);
         ArrayList<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -87,6 +90,26 @@ public class WarGame extends Game {
             ((WarPlayer) getPlayers().get(index % 2)).getDeck().addCard((WarCard) c);
             index++;
         }
+        // Start while loop
+        while((currentRound < MAX_THRESHOLD) && (((WarPlayer) getPlayers().get(0)).getDeck().getSize() > 0) && ((WarPlayer) getPlayers().get(1)).getDeck().getSize() > 0) {
+            WarCard p1Card = ((WarPlayer) getPlayers().get(0)).getDeck().grabCard(0);
+            WarCard p2Card = ((WarPlayer) getPlayers().get(1)).getDeck().grabCard(1);
+            cardsOnTable.add(p1Card);
+            cardsOnTable.add(p2Card);
+            
+            comparing(p1Card, p2Card);
+            if (tie == true) {
+                resolveWar(p1Card, p2Card);
+            }
+            
+            // HERE: give everything to winner. Depends if comparing is void 
+            
+            resetTable();
+            currentRound++;
+        }
+        
+        // Call declareWinner
+        declareWinner();
     }
     
     @Override
@@ -102,17 +125,20 @@ public class WarGame extends Game {
      * IF P2 WINS: MARK P2 AS WINNER FOR THIS ROUND.
      * IF TIE: SIMPLY SET THE 'tie' BOOLEAN FLAG TO TRUE. DO NOTHING ELSE.
      */
-    public void Comparing(WarCard p1, WarCard p2) {
+    public void comparing(WarCard p1, WarCard p2) {
         // COMPARE P1 AND P2 NUMBERS. 
         // SET tie = TRUE IF THEY ARE EQUAL.
         if(p1.getNumber().getValue() > p2.getNumber().getValue()) {
-            
+            player1.addCard(p1);
+            player1.addCard(p2);
         }
         else if(p1.getNumber().getValue() < p2.getNumber().getValue()) {
-            
+            player2.addCard(p1);
+            player2.addCard(p2);
         }
         else {
             tie = true;
+            resolveWar(p1, p2);
         }
     }
 
@@ -127,7 +153,42 @@ public class WarGame extends Game {
      */
     public ArrayList<WarCard> resolveWar(WarCard p1, WarCard p2) {
         // TODO: IMPLEMENT WAR LOGIC (3 CARDS DOWN, 1 UP)
-        return null;
+        cardsOnTable.add(p1);
+        cardsOnTable.add(p2);
+        while(tie){
+            if (player1.getDeck().getSize() < 4 || player2.getDeck().getSize() < 4) {
+                System.out.println("One player has no enough card, game is over!");
+                tie = false;
+            }
+            
+            for (int i = 0; i < 3; i++){
+                if(player1.getDeck().getSize() > 0){
+                    cardsOnTable.add(player1.getDeck().grabCard(0));
+                }
+                if(player2.getDeck().getSize() > 0){
+                    cardsOnTable.add(player2.getDeck().grabCard(0));
+                }
+            }
+            
+            WarCard p1NewCard = player1.getDeck().grabCard(0);
+            WarCard p2NewCard = player2.getDeck().grabCard(0);
+            
+            comparing(p1NewCard, p2NewCard);
+            
+            if(!tie){
+                if(p1NewCard.getNumber().getValue() > p2NewCard.getNumber().getValue()){
+                    for(WarCard card : cardsOnTable){
+                        player1.addCard(card);
+                    }
+                }
+                else{
+                    for(WarCard card : cardsOnTable){
+                        player2.addCard(card);
+                    }
+                }
+            }
+            cardsOnTable.clear();
+        }
     }
 
     /**
@@ -154,10 +215,10 @@ public class WarGame extends Game {
         // CHECK IF A PLAYER HAS 52 CARDS, OR IF ROUND LIMIT HIT, CHECK WHO HAS HIGHER groupSize().
         // PRINT OUT THE WINNER CLEARLY TO THE CONSOLE.
         if(groupSize((WarPlayer) getPlayers().get(0)) == 52) {
-           System.out.println("Player 1 Wins");
+           System.out.println(getPlayers().get(0).getName() + " Wins");
         }
         else if(groupSize((WarPlayer) getPlayers().get(1)) == 52) {
-           System.out.println(" Wins");
+           System.out.println(getPlayers().get(1).getName() + " Wins");
         }
         
     }
