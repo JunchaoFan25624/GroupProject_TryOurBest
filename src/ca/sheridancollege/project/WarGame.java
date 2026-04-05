@@ -12,22 +12,22 @@ import java.util.ArrayList;
  */
 public class WarGame extends Game {
 
-    // TODO: DEV NOTES - DECLARE THE FOLLOWING PRIVATE ATTRIBUTES EXACTLY AS UML STATES:
+    // DEV NOTES - DECLARE THE FOLLOWING PRIVATE ATTRIBUTES EXACTLY AS UML STATES:
     private int currentRound;
     private ArrayList<WarCard> cardsOnTable;
     private boolean tie;
 
     public WarGame(String name) {
         super(name);
-        // TODO: INITIALIZE currentRound TO 0
-        // TODO: INITIALIZE cardsOnTable AS A NEW EMPTY ARRAYLIST
-        // TODO: INITIALIZE tie TO FALSE
+        // INITIALIZE currentRound TO 0
+        // INITIALIZE cardsOnTable AS A NEW EMPTY ARRAYLIST
+        // INITIALIZE tie TO FALSE
         currentRound = 0;
         cardsOnTable = new ArrayList<WarCard>();
         tie = false;
     }
 
-    // TODO: CREATE GETTERS AND SETTERS FOR currentRound
+    // CREATE GETTERS AND SETTERS FOR currentRound
 
     public int getCurrentRound() {
         return currentRound;
@@ -36,7 +36,6 @@ public class WarGame extends Game {
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }
-    
 
     /**
      * TODO: DEV NOTES - THIS IS THE MAIN LOOP OF THE GAME. 
@@ -59,6 +58,12 @@ public class WarGame extends Game {
     public void startGame() { // Or override play()
         // TODO: IMPLEMENT MAIN GAME LOOP HERE
         ArrayList<WarCard> deck = new ArrayList<WarCard>();
+        
+        for (Suit suit : Suit.values()) {
+            for (Number number : Number.values()) {
+                deck.add(new WarCard(suit, number));
+            }
+        }
     }
     
     @Override
