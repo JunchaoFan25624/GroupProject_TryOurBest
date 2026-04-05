@@ -29,10 +29,14 @@ public class WarGroups extends GroupOfCards {
      * @return WarCard The card pulled from the player's deck
      */
     public WarCard grabCard(int number) {
-        // TODO: IMPLEMENT REMOVAL AND RETURN OF CARD AT INDEX 'number'
-        return null;
+        // IMPLEMENT REMOVAL AND RETURN OF CARD AT INDEX 'number'
+        Card targetCard = getCards().remove(number);
+        return (WarCard) targetCard;
     }
     
-    // TODO: YOU WILL ALSO LIKELY NEED AN addCard(WarCard c) METHOD HERE TO 
+    // YOU WILL ALSO LIKELY NEED AN addCard(WarCard c) METHOD HERE TO 
     // ADD WON CARDS TO THE BOTTOM OF THIS PLAYER'S DECK.
+    public void addCard(WarCard card) {
+        getCards().add(card);
+    }
 }
