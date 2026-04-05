@@ -41,21 +41,6 @@ public class WarGame extends Game {
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }
-
-    /*
-     * 3. START A WHILE LOOP: 
-     *    LOOP CONDITION: (currentRound < MAX_THRESHOLD) AND (BOTH PLAYERS HAVE > 0 CARDS)
-     * 4. INSIDE LOOP:
-     *    - GRAB TOP CARD FROM PLAYER 1
-     *    - GRAB TOP CARD FROM PLAYER 2
-     *    - ADD BOTH CARDS TO 'cardsOnTable'
-     *    - CALL Comparing(p1Card, p2Card)
-     *    - IF (tie == true) -> CALL resolveWar()
-     *    - GIVE EVERYTHING IN 'cardsOnTable' TO THE WINNER
-     *    - CALL resetTable()
-     *    - INCREMENT currentRound
-     * 5. ONCE LOOP ENDS, CALL declareWinner()
-     */
     
     public void startGame() {
         
