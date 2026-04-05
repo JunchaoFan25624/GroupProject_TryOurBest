@@ -21,6 +21,7 @@ public class WarPlayer extends Player {
     
     public WarPlayer(String name) {
         super(name);
+        deck = new WarGroups(0);
     }
 
     /**

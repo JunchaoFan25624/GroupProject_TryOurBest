@@ -31,6 +31,7 @@ public class WarGroups extends GroupOfCards {
     public WarCard grabCard(int number) {
         // IMPLEMENT REMOVAL AND RETURN OF CARD AT INDEX 'number'
         Card targetCard = getCards().remove(number);
+        setSize(getSize()-1);
         return (WarCard) targetCard;
     }
     
@@ -38,5 +39,6 @@ public class WarGroups extends GroupOfCards {
     // ADD WON CARDS TO THE BOTTOM OF THIS PLAYER'S DECK.
     public void addCard(WarCard card) {
         getCards().add(card);
+        setSize(getSize()+1);
     }
 }

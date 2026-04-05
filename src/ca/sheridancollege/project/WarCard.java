@@ -13,17 +13,17 @@ package ca.sheridancollege.project;
  */
 public class WarCard extends Card {
     
-    // TODO: DECLARE PRIVATE ATTRIBUTES FOR 'Suit suit' AND 'Number number'
+    // DECLARE PRIVATE ATTRIBUTES FOR 'Suit suit' AND 'Number number'
     private Suit suit;
     private Number number;
-    // TODO: CREATE A CONSTRUCTOR THAT TAKES (Suit suit, Number number) AND ASSIGNS THEM
+    // CREATE A CONSTRUCTOR THAT TAKES (Suit suit, Number number) AND ASSIGNS THEM
 
     public WarCard(Suit suit, Number number) {
         this.suit = suit;
         this.number = number;
     }
     
-    // TODO: CREATE GETTERS FOR SUIT AND NUMBER SO THE 'WarGame' CAN ACCESS THEM FOR COMPARISON
+    // CREATE GETTERS FOR SUIT AND NUMBER SO THE 'WarGame' CAN ACCESS THEM FOR COMPARISON
 
     public Suit getSuit() {
         return suit;
@@ -35,7 +35,7 @@ public class WarCard extends Card {
 
     @Override
     public String toString() {
-        // TODO: OVERRIDE THIS METHOD TO RETURN A STRING LIKE "ACE of SPADES" OR "TWO of HEARTS"
+        // OVERRIDE THIS METHOD TO RETURN A STRING LIKE "ACE of SPADES" OR "TWO of HEARTS"
         return number + " of " + suit;
     }
 }
