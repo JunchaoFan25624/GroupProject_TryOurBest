@@ -5,6 +5,7 @@
 package ca.sheridancollege.project;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -57,12 +58,34 @@ public class WarGame extends Game {
     
     public void startGame() { // Or override play()
         // TODO: IMPLEMENT MAIN GAME LOOP HERE
-        ArrayList<WarCard> deck = new ArrayList<WarCard>();
+        
+        // Create players
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Player 1 Name: ");
+        String p1Name = sc.nextLine();
+        System.out.println("Player 2 Name: ");
+        String p2Name = sc.nextLine();
+        WarPlayer player1 = new WarPlayer(p1Name);
+        WarPlayer player2 = new WarPlayer(p2Name);
+        ArrayList<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        setPlayers(players);
+        // Make standard deck and shuffle
+        GroupOfCards deck = new GroupOfCards(52);
         
         for (Suit suit : Suit.values()) {
             for (Number number : Number.values()) {
-                deck.add(new WarCard(suit, number));
+                deck.getCards().add(new WarCard(suit, number));
             }
+        }
+        
+        deck.shuffle();
+        // Deal cards to players
+        int index = 0;
+        for (Card c : deck.getCards()) {
+            ((WarPlayer) getPlayers().get(index % 2)).getDeck().addCard((WarCard) c);
+            index++;
         }
     }
     
@@ -134,7 +157,7 @@ public class WarGame extends Game {
            System.out.println("Player 1 Wins");
         }
         else if(groupSize((WarPlayer) getPlayers().get(1)) == 52) {
-           System.out.println("Player 2 Wins");
+           System.out.println(" Wins");
         }
         
     }
