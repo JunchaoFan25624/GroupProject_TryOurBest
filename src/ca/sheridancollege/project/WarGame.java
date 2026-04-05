@@ -59,10 +59,6 @@ public class WarGame extends Game {
     public void startGame() { // Or override play()
         // TODO: IMPLEMENT MAIN GAME LOOP HERE
         ArrayList<WarCard> deck = new ArrayList<WarCard>();
-        
-        for(int i=0;i<4;i++) {
-            
-        }
     }
     
     @Override
